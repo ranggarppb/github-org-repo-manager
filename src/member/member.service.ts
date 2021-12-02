@@ -12,23 +12,17 @@ export class MemberService {
     private memberRepository: Repository<Member>,
   ) {}
 
-  create(createMemberDto: CreateMemberDto) {
-    return 'This action adds a new member';
-  }
-
   findAll(): Promise<Member[]> {
-    return this.memberRepository.find();
-  }
-
-  findOne(id: number) {
-    return `This action returns a #${id} member`;
-  }
-
-  update(id: number, updateMemberDto: UpdateMemberDto) {
-    return `This action updates a #${id} member`;
-  }
-
-  remove(id: number) {
-    return `This action removes a #${id} member`;
+    return this.memberRepository
+      .find()
+      .then((member) =>
+        member.sort((a, b) =>
+          a.cnt_followers > b.cnt_followers
+            ? -1
+            : b.cnt_followers > a.cnt_followers
+            ? 1
+            : 0,
+        ),
+      );
   }
 }
