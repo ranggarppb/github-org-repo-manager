@@ -1,0 +1,1 @@
+docker run --rm -it -p 3000:80 --env-file ./.env org-repo-manager
