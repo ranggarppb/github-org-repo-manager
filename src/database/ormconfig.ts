@@ -1,4 +1,3 @@
-import { join } from 'path';
 import { ConnectionOptions } from 'typeorm';
 
 import { PROD_ENV } from '../constants';
@@ -17,11 +16,11 @@ if (process.env.INSTANCE_CONNECTION_NAME && process.env.NODE_ENV === PROD_ENV) {
 
 const connectionOptions: ConnectionOptions = {
   type: 'postgres',
-  host: config.host || 'localhost',
+  host: config.host,
   port: 5432,
-  username: config.user || 'postgres',
-  password: config.password || 'postgres',
-  database: config.database || 'my_database',
+  username: config.user,
+  password: config.password,
+  database: config.database,
   ssl:
     process.env.NODE_ENV === PROD_ENV ? { rejectUnauthorized: false } : false,
   entities: ['dist/**/entities/*.entity{.ts,.js}'],
