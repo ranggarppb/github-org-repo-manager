@@ -4,6 +4,7 @@ import { AppService } from './app.service';
 import { ConfigModule } from '@nestjs/config';
 import { MemberModule } from './member/member.module';
 import { TypeOrmModule } from '@nestjs/typeorm';
+import { CommentModule } from './comment/comment.module';
 import * as connectionOptions from './database/ormconfig';
 
 @Module({
@@ -13,6 +14,7 @@ import * as connectionOptions from './database/ormconfig';
     }),
     TypeOrmModule.forRoot(connectionOptions),
     MemberModule,
+    CommentModule,
   ],
   controllers: [AppController],
   providers: [AppService],
