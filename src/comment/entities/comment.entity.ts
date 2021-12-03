@@ -1,3 +1,4 @@
+import { ApiProperty } from '@nestjs/swagger';
 import {
   Column,
   DeleteDateColumn,
@@ -7,15 +8,19 @@ import {
 
 @Entity()
 export class Comment {
+  @ApiProperty()
   @PrimaryGeneratedColumn()
   id: number;
 
+  @ApiProperty()
   @Column()
   organization: string;
 
+  @ApiProperty()
   @Column()
   comment: string;
 
+  @ApiProperty()
   @DeleteDateColumn()
   deleted_date: Date;
 }
