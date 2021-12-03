@@ -5,11 +5,16 @@ import { CommentService } from './comment.service';
 describe('CommentController', () => {
   let controller: CommentController;
 
+  const mockCommentService = {};
+
   beforeEach(async () => {
     const module: TestingModule = await Test.createTestingModule({
       controllers: [CommentController],
       providers: [CommentService],
-    }).compile();
+    })
+      .overrideProvider(CommentService)
+      .useValue(mockCommentService)
+      .compile();
 
     controller = module.get<CommentController>(CommentController);
   });
