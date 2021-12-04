@@ -1,73 +1,39 @@
-<p align="center">
-  <a href="http://nestjs.com/" target="blank"><img src="https://nestjs.com/img/logo_text.svg" width="320" alt="Nest Logo" /></a>
-</p>
+# Github Organization Repository Manager
 
-[circleci-image]: https://img.shields.io/circleci/build/github/nestjs/nest/master?token=abc123def456
-[circleci-url]: https://circleci.com/gh/nestjs/nest
+## Deployment Link
 
-  <p align="center">A progressive <a href="http://nodejs.org" target="_blank">Node.js</a> framework for building efficient and scalable server-side applications.</p>
-    <p align="center">
-<a href="https://www.npmjs.com/~nestjscore" target="_blank"><img src="https://img.shields.io/npm/v/@nestjs/core.svg" alt="NPM Version" /></a>
-<a href="https://www.npmjs.com/~nestjscore" target="_blank"><img src="https://img.shields.io/npm/l/@nestjs/core.svg" alt="Package License" /></a>
-<a href="https://www.npmjs.com/~nestjscore" target="_blank"><img src="https://img.shields.io/npm/dm/@nestjs/common.svg" alt="NPM Downloads" /></a>
-<a href="https://circleci.com/gh/nestjs/nest" target="_blank"><img src="https://img.shields.io/circleci/build/github/nestjs/nest/master" alt="CircleCI" /></a>
-<a href="https://coveralls.io/github/nestjs/nest?branch=master" target="_blank"><img src="https://coveralls.io/repos/github/nestjs/nest/badge.svg?branch=master#9" alt="Coverage" /></a>
-<a href="https://discord.gg/G7Qnnhy" target="_blank"><img src="https://img.shields.io/badge/discord-online-brightgreen.svg" alt="Discord"/></a>
-<a href="https://opencollective.com/nest#backer" target="_blank"><img src="https://opencollective.com/nest/backers/badge.svg" alt="Backers on Open Collective" /></a>
-<a href="https://opencollective.com/nest#sponsor" target="_blank"><img src="https://opencollective.com/nest/sponsors/badge.svg" alt="Sponsors on Open Collective" /></a>
-  <a href="https://paypal.me/kamilmysliwiec" target="_blank"><img src="https://img.shields.io/badge/Donate-PayPal-ff3f59.svg"/></a>
-    <a href="https://opencollective.com/nest#sponsor"  target="_blank"><img src="https://img.shields.io/badge/Support%20us-Open%20Collective-41B883.svg" alt="Support us"></a>
-  <a href="https://twitter.com/nestframework" target="_blank"><img src="https://img.shields.io/twitter/follow/nestframework.svg?style=social&label=Follow"></a>
-</p>
-  <!--[![Backers on Open Collective](https://opencollective.com/nest/backers/badge.svg)](https://opencollective.com/nest#backer)
-  [![Sponsors on Open Collective](https://opencollective.com/nest/sponsors/badge.svg)](https://opencollective.com/nest#sponsor)-->
+Cloud Run deployment link: [Swagger Link](https://org-repo-manager-bm57i6eyna-et.a.run.app)
 
-## Description
+## Architecture
 
-[Nest](https://github.com/nestjs/nest) framework TypeScript starter repository.
+<img src="https://i.ibb.co/cg0cT4N/Github-Organization-Repo-Architecture.png" width="350">
 
-## Installation
+### General Consideration
+- SQL database usage for comment service: PostgreSQL is able to save long string data and it's possible in the future if we want to get all comments per member so it will need some join and SQL is optimized for join use case
+- SQL database usage for member service: User data is the most data that has join scenario
+- Combining ```/comment``` and ```/member``` to be one service: It must use 1 SQL database and it's bad to seperate service if they're using the same database
+- Member service using the real github database for Xendit organization: In this case we dont have any ```POST``` method so I create cron scheduler in cloud to schedule cloud function to dump Xendit member data
 
-```bash
-$ npm install
-```
 
-## Running the app
+## How to run locally
 
-```bash
-# development
-$ npm run start
+### Running the migration
+1. We only use .env file to be used in built application so we must export all variables manually first. Here is the example:
+  ```
+  export DB_HOST=localhost
+  export DB_PORT=5432
+  export DB_USER=postgres
+  export DB_PASSWORD=postgres
+  export DB_DATABASE=postgres
+  export env=DEV
+  ```
+2. Run ```npm install``` to install the needed package
+3. Run ```npm run migration:run```
+4. Seeding data code has not provided yet, so maybe you would like to manually insert the data first, especially for ```/member``` because for ```/comment``` you can manually post it
 
-# watch mode
-$ npm run start:dev
-
-# production mode
-$ npm run start:prod
-```
-
-## Test
-
-```bash
-# unit tests
-$ npm run test
-
-# e2e tests
-$ npm run test:e2e
-
-# test coverage
-$ npm run test:cov
-```
-
-## Support
-
-Nest is an MIT-licensed open source project. It can grow thanks to the sponsors and support by the amazing backers. If you'd like to join them, please [read more here](https://docs.nestjs.com/support).
-
-## Stay in touch
-
-- Author - [Kamil Myśliwiec](https://kamilmysliwiec.com)
-- Website - [https://nestjs.com](https://nestjs.com/)
-- Twitter - [@nestframework](https://twitter.com/nestframework)
-
-## License
-
-Nest is [MIT licensed](LICENSE).
+### Running the Application
+1. Make sure you have docker installed
+2. Run ```docker build -t org-repo-manager .``` to build the image on your local machine
+3. Setup the environment variable in **env-template** file and change the filename to **.env**
+4. Run ```sh run.sh``` to run your **org-repo-manager** newly built image container
+5. Go to ```http://localhost:{PORT}``` to open the swagger

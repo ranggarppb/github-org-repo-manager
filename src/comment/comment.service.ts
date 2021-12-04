@@ -18,7 +18,7 @@ export class CommentService extends TypeOrmQueryService<Comment> {
     return this.commentRepository
       .save(newComment)
       .then(() => newComment)
-      .catch(() => console.log('error'));
+      .catch((error) => console.log(error));
   }
 
   async findAll(): Promise<void | Comment[]> {
@@ -43,6 +43,6 @@ export class CommentService extends TypeOrmQueryService<Comment> {
       .then(() => {
         return { organization: organization, deleted: true };
       })
-      .catch(() => console.log('error'));
+      .catch((error) => console.log(error));
   }
 }
