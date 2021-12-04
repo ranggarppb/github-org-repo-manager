@@ -8,7 +8,7 @@ RUN npm run build
 
 FROM node:14.17.0
 WORKDIR /app
-COPY package.json .
+COPY package.json ./
 RUN npm install --only=production
 COPY --from=base /app/dist ./dist
 CMD npm run start:prod
