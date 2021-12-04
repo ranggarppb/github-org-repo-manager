@@ -1,0 +1,14 @@
+- on:
+  push:
+    branches: [ main ]
+
+- id: 'auth'
+  uses: 'google-github-actions/auth@v0.4.0'
+  with:
+    credentials_json: '${{ secrets.GCP_SA_KEY }}'
+
+- name: Deploy to Cloud Run
+  uses: google-github-actions/deploy-cloudrun@v0.6.0
+  with:
+    image: asia.gcr.io/xendit-repository-management/org-repo-manager
+    service: org-repo-manager

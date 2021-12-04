@@ -1,8 +1,10 @@
 # Github Organization Repository Manager
 
-## Deployment Link
+## Link
 
-Cloud Run deployment link: [Swagger Link](https://org-repo-manager-bm57i6eyna-et.a.run.app)
+- API Repository: [Github Link](https://github.com/ranggarppb/github-org-repo-manager)
+- Data Dumper Repository: [Github Link](https://github.com/ranggarppb/github-orgs-dump-data)
+- Cloud Run deployment link: [Swagger Link](https://org-repo-manager-bm57i6eyna-et.a.run.app)
 
 ## Architecture
 
