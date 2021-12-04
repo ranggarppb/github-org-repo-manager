@@ -37,12 +37,21 @@ export class CommentService extends TypeOrmQueryService<Comment> {
     return comments;
   }
 
-  remove(organization: string): Promise<void | any> {
-    return this.commentRepository
-      .softDelete({ organization })
-      .then(() => {
-        return { organization: organization, deleted: true };
-      })
-      .catch((error) => console.log(error));
+  async remove(organization: string): Promise<void | any> {
+    const comments = await this.commentRepository.find({
+      where: { organization },
+    });
+    if (comments.length === 0) {
+      throw new NotFoundException(
+        `Comment from organization ${organization} not found`,
+      );
+    } else {
+      return this.commentRepository
+        .softDelete({ organization })
+        .then(() => {
+          return { organization: organization, deleted: true };
+        })
+        .catch((error) => console.log(error));
+    }
   }
 }
